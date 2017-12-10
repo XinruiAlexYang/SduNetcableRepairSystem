@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>山东大学网管会软件园校区</title>
+
+</head>
+
+<body>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css">
+  <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  
+  
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header ">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">SDU_SNA</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation. We hide it in small screens. -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a class="mdl-navigation__link" href="">管理员登陆入口</a>
+        </nav>
+      </div>
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#scroll-tab-1" class="mdl-layout__tab is-active">报修</a>
+        <a href="#scroll-tab-2" class="mdl-layout__tab">简介</a>
+      </div>
+    </header>
+
+    <!--<div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">SDU_SNA</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="scroll-tab-1">报修</a>
+        <a class="mdl-navigation__link" href="scroll-tab-2">简介</a>
+      </nav>
+    </div>-->
+    
+    <main class="mdl-layout__content  mdl-color--grey-100">
+      <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+        <div class="page-content">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+            <div class="mdl-cell wgh-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+              <h3>提交网口报修</h3>
+              <div>
+              <h5>宿舍楼：
+              <button id="bu1" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored" v-on:click="chooseIt" v-bind:class="{ 'mdl-button--accent': isPress}">
+                    一号楼
+              </button>
+              <button id="bu2"  v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    二号楼
+              </button>
+              <button id="bu3"  v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    三号楼
+              </button>
+              <button id="bu4"  v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    四号楼
+              </button>
+              <button id="bu5" v-on:click="chooseIt"  v-bind:class="{'mdl-button--accent': isPress}" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    五号楼
+              </button>
+              <button id="bu6"  v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="bu mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    六号楼
+              </button>
+              </h5>
+              </div>
+              <!--楼层-->
+              <div>
+              <h5>楼层：
+              <button id="fl1" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    一楼
+              </button>
+              <button id="fl2" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    二楼
+              </button>
+              <button id="fl3" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    三楼
+              </button>
+              <button id="fl4" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    四楼
+              </button>
+              <button id="fl5" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}"  class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    五楼
+              </button>
+              <button id="fl6" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    六楼
+              </button>
+              <button id="fl7" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    七楼
+              </button>
+              </h5>
+              </div>
+              <!--房间号-->
+              <div>
+                <h5>房间号：
+                  <button id="ro1" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    01
+                  </button>
+                  <button id="ro2" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    02
+                  </button>
+                  <button id="ro3" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    03
+                  </button>
+                  <button id="ro4" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    04
+                  </button>
+                  <button id="ro5" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    05
+                  </button>
+                  <button id="ro6" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    06
+                  </button>
+                  <button id="ro7" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    07
+                  </button>
+                  <button id="ro8" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    08
+                  </button>
+                  <button id="ro9" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    09
+                  </button>
+                  <button id="ro10" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    10
+                  </button>
+                  <button id="ro11" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    11
+                  </button>
+                  <button id="ro12" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    12
+                  </button>
+                  <button id="ro13" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    13
+                  </button>
+                  <button id="ro14" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    14
+                  </button>
+                  <button id="ro15" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    15
+                  </button>
+                  <button id="ro16" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    16
+                  </button>
+                  <button id="ro17"  v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    17
+                  </button>
+                  <button id="ro18" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    18
+                  </button>
+                  <button id="ro19" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    19
+                  </button>
+                  <button id="ro20" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    20
+                  </button>
+                  <button id="ro21" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    21
+                  </button>
+                  <button id="ro22" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    22
+                  </button>
+                  <button id="ro23" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    23
+                  </button>
+                  <button id="ro24" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    24
+                  </button>
+                  <button id="ro25" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}"  class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    25
+                  </button>
+                  <button id="ro26" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    26
+                  </button>
+                  <button id="ro27" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    27
+                  </button>
+                  <button id="ro28" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    28
+                  </button>
+                  <button id="ro29" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    29
+                  </button>
+                  <button id="ro30" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    30
+                  </button>
+                  <button id="ro31" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    31
+                  </button>
+                  <button id="ro32" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    32
+                  </button>
+                  <button id="ro33" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    33
+                  </button>
+                  <button id="ro34" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    34
+                  </button>
+                  <button id="ro35" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    35
+                  </button>
+                  <button id="ro36" v-on:click="chooseIt" v-bind:class="{'mdl-button--accent': isPress}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    36
+                  </button>
+                </h5>
+              </div>
+              <div>
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" v-model="shareState.repReason" maxlength="20" type="text" id="repair-reason">
+                    <label class="mdl-textfield__label" for="repair-reason">报修原因</label>
+                  </div>
+                </form>
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" v-model="shareState.conPhone" maxlength="11" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="contact-phone">
+                    <label class="mdl-textfield__label" for="contact-phone">联系电话</label>
+                    <span class="mdl-textfield__error">请输入十一位纯数字手机号码</span>
+                  </div>
+                </form>
+              </div>
+              <div id="errorMessage" class="mdl-color-text--red-400">
+                <button id="submit" v-on:click="checkMsg" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                  提交报修
+                </button>
+                <p v-if="noBuilding">请标出所在宿舍楼</p>
+                <p v-if="noFloor">请标出所在楼层</p>
+                <p v-if="noRoom">请标出所在房间号</p>
+                <p v-if="noRep">请填写报修原因</p>
+                <p v-if="noPhone">请填写联系方式</p> 
+              </div>
+            </div>
+          </div>
+        </div>
+        <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button type="button" class="mdl-snackbar__action"></button>
+        </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+        <div class="page-content mdl-color--grey-100">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+            <div class="mdl-cell wgh-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+              <h3>网管会简介</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!--footer-->
+    <footer class="mdl-mini-footer">
+      <div class="mdl-mini-footer__left-section">
+        <div class="mdl-logo">Title</div>
+        <ul class="mdl-mini-footer__link-list">
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+    </footer>
+    </div>
+    <script src="indexjs.js"></script>  
+    
+</body>
+
+</html>

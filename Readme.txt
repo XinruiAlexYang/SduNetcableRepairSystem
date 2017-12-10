@@ -1,0 +1,2 @@
+数据库是mongodb,目录为db，默认端口
+服务端用nodejs运行wgh文件夹下app.js

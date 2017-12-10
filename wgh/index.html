@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>提交报表</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+</head>
+
+<body class="grey lighten-4">
+    <style>
+    .rptCard{
+        margin-top : 20px;
+    }
+
+    .rptCard-content{
+        margin: 8px;
+        padding: 30px 56px;
+    }
+
+    .btn-large{
+        margin-top: 6px;
+    }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <nav>
+        <div class="nav-wrapper ">
+            <a href="first.html" class="brand-logo">SDU软件园网管会</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col m12 s12 l12">
+                <div class="card white rptCard ">
+                    <div class = "rptCard-content">
+                        <div class= "rptCard-header">
+                            <h4>报修表</h4>
+                        </div>
+                        <div class="divider"></div>
+                        <div id="form" class= "rptCard-content">
+                            <div class="row"><!--choose house-->
+                                <div class="col m2 s2 l2">
+                                    <h5>楼号:</h5>
+                                </div>
+                                <div class="col m10 s10 l10">
+                                    <a v-on:click="whichBLight = 1" v-bind:class="{red:whichBLight === 1}" class="waves-effect waves-light btn-large">一号楼</a>
+                                    <a v-on:click="whichBLight = 2" v-bind:class="{red:whichBLight === 2}" class="waves-effect waves-light btn-large">二号楼</a>
+                                    <a v-on:click="whichBLight = 3" v-bind:class="{red:whichBLight === 3}" class="waves-effect waves-light btn-large">三号楼</a>
+                                    <a v-on:click="whichBLight = 4" v-bind:class="{red:whichBLight === 4}" class="waves-effect waves-light btn-large">四号楼</a>
+                                    <a v-on:click="whichBLight = 5" v-bind:class="{red:whichBLight === 5}" class="waves-effect waves-light btn-large">五号楼</a>
+                                    <a v-on:click="whichBLight = 6" v-bind:class="{red:whichBLight === 6}" class="waves-effect waves-light btn-large">六号楼</a>
+                                </div>
+                            </div>
+                            <div class="row"> <!--choose floor--> 
+                                <div class="col m2 s2 l2">
+                                    <h5>楼层:</h5>
+                                </div>
+                                <div class="col m10 s10 l10">
+                                    <!--<a v-on:click="whichFLight = 0" v-bind:class="{red:whichFLight === 0}" class="waves-effect waves-light btn-large">零层</a>-->
+                                    <a v-on:click="whichFLight = 1" v-bind:class="{red:whichFLight === 1}" class="waves-effect waves-light btn-large">一层</a>
+                                    <a v-on:click="whichFLight = 2" v-bind:class="{red:whichFLight === 2}" class="waves-effect waves-light btn-large">二层</a>
+                                    <a v-on:click="whichFLight = 3" v-bind:class="{red:whichFLight === 3}" class="waves-effect waves-light btn-large">三层</a>
+                                    <a v-on:click="whichFLight = 4" v-bind:class="{red:whichFLight === 4}" class="waves-effect waves-light btn-large">四层</a>
+                                    <a v-on:click="whichFLight = 5" v-bind:class="{red:whichFLight === 5}" class="waves-effect waves-light btn-large">五层</a>
+                                    <a v-on:click="whichFLight = 6" v-bind:class="{red:whichFLight === 6}" class="waves-effect waves-light btn-large">六层</a>
+                                    <a v-on:click="whichFLight = 7" v-bind:class="{red:whichFLight === 7}" class="waves-effect waves-light btn-large">七层</a>
+                                </div>
+                            </div>
+                            <div class="row"><!--choose Door--> 
+                                <div class="col m2 s2 l2">
+                                    <h5>房间号:</h5>
+                                </div>
+                                <div class="col m10 s10 l10">
+                                    <a v-on:click="whichDLight = 1" v-bind:class="{red:whichDLight === 1}" class="waves-effect waves-light btn-large">01</a>
+                                    <a v-on:click="whichDLight = 2" v-bind:class="{red:whichDLight === 2}" class="waves-effect waves-light btn-large">02</a>
+                                    <a v-on:click="whichDLight = 3" v-bind:class="{red:whichDLight === 3}" class="waves-effect waves-light btn-large">03</a>
+                                    <a v-on:click="whichDLight = 4" v-bind:class="{red:whichDLight === 4}" class="waves-effect waves-light btn-large">04</a>
+                                    <a v-on:click="whichDLight = 5" v-bind:class="{red:whichDLight === 5}" class="waves-effect waves-light btn-large">05</a>
+                                    <a v-on:click="whichDLight = 6" v-bind:class="{red:whichDLight === 6}" class="waves-effect waves-light btn-large">06</a>
+                                    <a v-on:click="whichDLight = 7" v-bind:class="{red:whichDLight === 7}" class="waves-effect waves-light btn-large">07</a>
+                                    <a v-on:click="whichDLight = 8" v-bind:class="{red:whichDLight === 8}" class="waves-effect waves-light btn-large">08</a>
+                                    <a v-on:click="whichDLight = 9" v-bind:class="{red:whichDLight === 9}" class="waves-effect waves-light btn-large">09</a>
+                                    <a v-on:click="whichDLight = 10" v-bind:class="{red:whichDLight === 10}" class="waves-effect waves-light btn-large">10</a>
+                                    <a v-on:click="whichDLight = 11" v-bind:class="{red:whichDLight === 11}" class="waves-effect waves-light btn-large">11</a>
+                                    <a v-on:click="whichDLight = 12" v-bind:class="{red:whichDLight === 12}" class="waves-effect waves-light btn-large">12</a>
+                                    <a v-on:click="whichDLight = 13" v-bind:class="{red:whichDLight === 13}" class="waves-effect waves-light btn-large">13</a>
+                                    <a v-on:click="whichDLight = 14" v-bind:class="{red:whichDLight === 14}" class="waves-effect waves-light btn-large">14</a>
+                                    <a v-on:click="whichDLight = 15" v-bind:class="{red:whichDLight === 15}" class="waves-effect waves-light btn-large">15</a>
+                                    <a v-on:click="whichDLight = 16" v-bind:class="{red:whichDLight === 16}" class="waves-effect waves-light btn-large">16</a>
+                                    <a v-on:click="whichDLight = 17" v-bind:class="{red:whichDLight === 17}" class="waves-effect waves-light btn-large">17</a>
+                                    <a v-on:click="whichDLight = 18" v-bind:class="{red:whichDLight === 18}" class="waves-effect waves-light btn-large">18</a>
+                                    <a v-on:click="whichDLight = 19" v-bind:class="{red:whichDLight === 19}" class="waves-effect waves-light btn-large">19</a>
+                                    <a v-on:click="whichDLight = 20" v-bind:class="{red:whichDLight === 20}" class="waves-effect waves-light btn-large">20</a>
+                                    <a v-on:click="whichDLight = 21" v-bind:class="{red:whichDLight === 21}" class="waves-effect waves-light btn-large">21</a>
+                                    <a v-on:click="whichDLight = 22" v-bind:class="{red:whichDLight === 22}" class="waves-effect waves-light btn-large">22</a>
+                                    <a v-on:click="whichDLight = 23" v-bind:class="{red:whichDLight === 23}" class="waves-effect waves-light btn-large">23</a>
+                                    <a v-on:click="whichDLight = 24" v-bind:class="{red:whichDLight === 24}" class="waves-effect waves-light btn-large">24</a>
+                                    <a v-on:click="whichDLight = 25" v-bind:class="{red:whichDLight === 25}" class="waves-effect waves-light btn-large">25</a>
+                                    <a v-on:click="whichDLight = 26" v-bind:class="{red:whichDLight === 26}" class="waves-effect waves-light btn-large">26</a>
+                                    <a v-on:click="whichDLight = 27" v-bind:class="{red:whichDLight === 27}" class="waves-effect waves-light btn-large">27</a>
+                                    <a v-on:click="whichDLight = 28" v-bind:class="{red:whichDLight === 28}" class="waves-effect waves-light btn-large">28</a>
+                                    <a v-on:click="whichDLight = 29" v-bind:class="{red:whichDLight === 29}" class="waves-effect waves-light btn-large">29</a>
+                                    <a v-on:click="whichDLight = 30" v-bind:class="{red:whichDLight === 30}" class="waves-effect waves-light btn-large">30</a>
+                                    <a v-on:click="whichDLight = 31" v-bind:class="{red:whichDLight === 31}" class="waves-effect waves-light btn-large">31</a>
+                                    <a v-on:click="whichDLight = 32" v-bind:class="{red:whichDLight === 32}" class="waves-effect waves-light btn-large">32</a>
+                                    <a v-on:click="whichDLight = 33" v-bind:class="{red:whichDLight === 33}" class="waves-effect waves-light btn-large">33</a>
+                                    <a v-on:click="whichDLight = 34" v-bind:class="{red:whichDLight === 34}" class="waves-effect waves-light btn-large">34</a>
+                                    <a v-on:click="whichDLight = 35" v-bind:class="{red:whichDLight === 35}" class="waves-effect waves-light btn-large">35</a>
+                                    <a v-on:click="whichDLight = 36" v-bind:class="{red:whichDLight === 36}" class="waves-effect waves-light btn-large">36</a>
+                                    <a v-on:click="whichDLight = 37" v-bind:class="{red:whichDLight === 37}" class="waves-effect waves-light btn-large">37</a>
+                                    <a v-on:click="whichDLight = 38" v-bind:class="{red:whichDLight === 38}" class="waves-effect waves-light btn-large">38</a>
+                                    <a v-on:click="whichDLight = 39" v-bind:class="{red:whichDLight === 39}" class="waves-effect waves-light btn-large">39</a>
+                                    <a v-on:click="whichDLight = 40" v-bind:class="{red:whichDLight === 40}" class="waves-effect waves-light btn-large">40</a>
+                                </div>
+                            </div>
+                            <div class="row"><!--fill report reason and phone number-->
+                                <div class="input-field col s6"><!--report reason-->
+                                    <input maxlength="40" v-model="repReason" placeholder="输入哪里的问题..." id="repReason" type="text" class="validate">
+                                    <label class="active" for="repReason">报修原因</label>
+                                </div>
+
+                                <div class="input-field col s6"><!--phone number-->
+                                    <input maxlength="11" v-model="conPhone"placeholder="输入你的手机号..." id="conPhone" pattern="-?[0-9]*(\.[0-9]+)?" type="tel" class="validate">
+                                    <label class="active" for="conPhone">联系方式</label>
+                                </div>
+                            </div>
+                            <button v-on:click="submit" class="hoverable right btn waves-effect waves-light">提交
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="indexjs.js"></script> 
+</body>
+</html>

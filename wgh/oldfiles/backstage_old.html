@@ -1,0 +1,342 @@
+<!Doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <title>网管会后台</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        
+        <link rel="stylesheet" href="style_old.css">
+    </head>
+
+    <body>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+            <header class=" demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title"></span>
+                    <div class="mdl-layout-spacer"></div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                    签到
+                    </button>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                        <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input class="mdl-textfield__input" type="text" id="search">
+                            <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                        </div>
+                    </div>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu-bottom-right" for="hdrbtn">
+                        <li class="mdl-menu__item">About</li>
+                        <li class="mdl-menu__item">Contact</li>
+                    </ul>
+                </div>
+            </header>
+
+            <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+                <header class="demo-drawer-header">
+                    <div class="demo-avatar-dropdown ">
+                        <div class="text-center"><span>管理员</span></div>
+                        <div class="mdl-layout-spacer"></div>
+                        <button id="hbrbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                            <i class="material-icons">arrow_drop_down</i>
+                            <span class="visuallyhidden">Accounts</span>
+                        </button>
+                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hbrbtn">
+                            <li class="mdl-menu__item">管理员</li>
+                            <li class="mdl-menu__item">苟苟</li>
+                        </ul>
+                    </div>
+                </header>
+                <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+                    <a class="mdl-navigation__link" href="./backstage.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>主页</a>
+                    <a class="mdl-navigation__link" href="./maintaintable.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>报修列表</a>
+                    <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">build</i>耗材统计</a>
+                    <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">group</i>人员管理</a>
+                    <div class="mdl-layout-spacer"></div>
+                    <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content mdl-color--grey-100">
+                <div class="mdl-grid">
+                    <div id="repList"class="repList mdl-cell mdl-cell--8-col">
+                        <section id="repItem0" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn0">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn0">
+                                <li v-on:click="deleteIt" class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem1" v-if="seen"  class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn1">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem2" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn2">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn2">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem3" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn3">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn3">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem4" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn4">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn4">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem5" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn5">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn5">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem6" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn6">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn6">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem7" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn7">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn7">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem8" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn8">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn8">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+                        <section id="repItem9" v-if="seen" class="repItem section--center mdl-grid ">
+                            <div class="mdl-shadow--2dp mdl-card mdl-cell mdl-cell--12-col">
+                                <div  class="mdl-card__supporting-text mdl-grid mdl-grid--nospacing">
+                                    <h4 class="mdl-cell mdl-cell--12-col">{{addressStr}}</h4>
+                                    <div class="rptContent mdl-cell mdl-cell--12-col">
+                                        <p><b>报修原因</b>：{{repReason}}</p>
+                                        <p><b>联系电话</b>：{{conPhone}}</p>
+                                    </div>
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <a href="#" class="mdl-button">填写维修信息</a>
+                                    <p class="rptTime mdl-color-text--grey-600" align="right">{{reportTime}}</p>
+                                </div>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple" id="btn9">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn9">
+                                <li class="mdl-menu__item" >删除</li>
+                            </ul>
+                        </section>
+
+
+
+                    </div>
+                    <div class="backstage-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+                        <div class="backstage-attendance mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+                            <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+                                <h2 class="mdl-card__title-text">今日值班</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                周五 杨昕锐
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">查看完整值班表</a>
+                            </div>
+                        </div>
+
+                        <div class="backstage-separator mdl-cell--1-col"></div>
+                        <div class="backstage-announcement mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+                            <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+                                <h3>留言</h3>
+                                <ul>
+                                    <li>
+                                        把地扫了
+                                    </li>
+                                    <li>
+                                        把垃圾倒了
+                                    </li>
+                                    <li>
+                                        把窗户关了
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">修改留言</a>
+                                <div class="mdl-layout-spacer"></div>
+                                <i class="material-icons">edit</i>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+                        <div class="mdl-snackbar__text"></div>
+                        <button type="button" class="mdl-snackbar__action"></button>
+                    </div>
+                </div><script src="backstagejs_old.js"></script> 
+            </main>
+        </div>
+                    
+    </body>
+</html>

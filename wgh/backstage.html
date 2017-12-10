@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>山东大学网管会软件园校区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<style>
+.side-nav .userView{
+    position: relative;
+    padding: 32px 32px 0;
+    margin-bottom:8px;
+}
+
+header, main, footer {
+      padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+      header, main, footer {
+        padding-left: 0;
+      }
+    }
+
+.repLists .card-content{
+    margin: 20px;
+}
+
+.card-p{
+    margin-top: 20px;
+}
+.card .card-image .card-title{
+    padding: 10px;
+}
+.more-delete{
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.moform{
+    margin-top: 40px;
+}
+.userView{
+    height:200px;
+}
+</style>
+<body class="grey lighten-3 ">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <header>
+        <!--<nav>
+            <div class="white nav-wrapper">
+                <a href="#" class="brand-logo"> Logo </a>
+                <ul id="nav-mobile" class="red lighten-2 right hide-on-med-and-down">
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </nav>-->
+    </header>
+
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+     <ul id="slide-out" class="side-nav fixed">
+      <li>
+          <div class="userView" >
+              <div class="background">
+                  <img src="images/qlsc.jpg" width="300" >
+              </div>
+              <!--<a href="#!user">
+                  <img class="circle" src="images/user.jpg">
+              </a>
+              <a href="#!name">
+                  <span class="white-text name">Jay chou</span>
+              </a>
+              <a href="#!email">
+                  <span class="white-text email">idontknow@abc.com</span>
+              </a>-->
+          </div>
+      </li>
+      <li><a href="#!"class="waves-effect"><i class="material-icons">home</i>主页</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">人员管理</a></li>
+      <li><a href="#modalR" class="waves-effect"><i class="material-icons">date_range</i>查看值班表</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">网口维修</a></li>
+      <li><a class="waves-effect" href="maintaintable.html"><i class="material-icons">inbox</i>报修表单</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">查询接口</a></li>
+      <li><a class="waves-effect" href="query.html"><i class="material-icons">face</i>自然语言查询</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">系统操作</a></li>
+      <li><a href="first.html" class="waves-effect"><i class="material-icons">power_settings_new</i>退出</a></li>
+    </ul>
+    <main>
+    <div class="row">
+        <div id="repLists0" class="repLists col s12 m12 l6 offset-l1">
+            <section id="repList0" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal0"href="#modal0">填写维修信息</a>
+                    <div id="modal0" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild0" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild0">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor0" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor0">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom0" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom0">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone0" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone0">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime0" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime0">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason0" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason0">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact0" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact0">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-initial chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div>
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown0" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown0" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList1" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal1"href="#modal1">填写维修信息</a>
+                    <div id="modal1" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild1" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild1">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor1" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor1">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom1" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom1">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone1" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone1">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime1" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime1">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason1" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason1">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact1" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact1">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown1" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown1" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList2" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal2"href="#modal2">填写维修信息</a>
+                    <div id="modal2" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild2" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild2">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor2" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor2">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom2" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom2">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone2" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone2">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime2" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime2">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason2" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason2">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact2" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact2">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown2" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown2" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList3" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal3"href="#modal3">填写维修信息</a>
+                    <div id="modal3" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild3" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild3">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor3" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor3">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom3" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom3">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone3" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone3">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime3" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime3">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason3" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason3">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact3" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact3">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown3" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown3" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+            <section id="repList4" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal4"href="#modal4">填写维修信息</a>
+                    <div id="modal4" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild4" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild4">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor4" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor4">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom4" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom4">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone4" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone4">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime4" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime4">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason4" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason4">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact4" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact4">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown4" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown4" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList5" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal5"href="#modal5">填写维修信息</a>
+                    <div id="modal5" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild5" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild5">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor5" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor5">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom5" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom5">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone5" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone5">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime5" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime5">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason5" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason5">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact5" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact5">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown5" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown5" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList6" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal6"href="#modal6">填写维修信息</a>
+                    <div id="modal6" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild6" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild6">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor6" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor6">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom6" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom6">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone6" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone6">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime6" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime6">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason6" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason6">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact6" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact6">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown6" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown6" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList7" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal7"href="#modal7">填写维修信息</a>
+                    <div id="modal7" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild7" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild7">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor7" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor7">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom7" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom7">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone7" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone7">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime7" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime7">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason7" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason7">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact7" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact7">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown7" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown7" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList8" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal8"href="#modal8">填写维修信息</a>
+                    <div id="modal8" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild8" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild8">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor8" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor8">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom8" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom8">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone8" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone8">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime8" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime8">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason8" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason8">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact8" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact8">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown8" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown8" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+
+            <section id="repList9" class="card horizontal small white">
+                <div class="card-image" style="max-width:150px">    
+                    <img src="images/qlsc.jpg" v-if="building =='获取数据中'">
+                    <img src="images/b1.jpg" v-if="building =='1'">
+                    <img src="images/b2.jpg" v-if="building =='2'">
+                    <img src="images/b3.jpg" v-if="building =='3'">
+                    <img src="images/b4.jpg" v-if="building =='4'">
+                    <img src="images/b5.jpg" v-if="building =='5'">
+                    <img src="images/b6.jpg" v-if="building =='6'">
+                    <span class="card-title">{{addressStr}}</span>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-p"><p><b>报修原因：</b>{{repReason}}</p></div>
+                    <div class="card-p"><p><b>联系方式：</b>{{conPhone}}</p></div>
+                </div>
+                <div class="card-action">
+                    <a class="modal-trigger waves-effect waves-light" data-target="modal9"href="#modal9">填写维修信息</a>
+                    <div id="modal9" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4>维修信息</h4>
+                            <div class="divider"></div>
+                            <div class="moform row container">
+                                <form class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="formBuild9" v-model="building" v-bind:value ="building" type="text" class="validate">
+                                            <label for="formBuild9">宿舍楼</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s3 offset-s1">
+                                            <input id="formFloor9" v-model="floor" v-bind:value = "floor" type="text" class="validate">
+                                            <label for="formFloor9">楼层</label>
+                                        </div>
+
+                                        <div class="input-field col s4 offset-s1">
+                                            <input id="formRoom9" v-model="room" v-bind:value = "room" type="text" class="validate">
+                                            <label for="formRoom9">门牌号</label>
+                                        </div>
+                                         
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s5 m5 l4">
+                                            <input id="formConPhone9" v-model="conPhone" v-bind:value ="conPhone" type="text" class="validate">
+                                            <label for="formConPhone9">联系方式</label>
+                                        </div>
+
+                                        <div class="input-field col s5 offset-s2 m5 offset-m2 l7 offset-l1">
+                                            <input id="formTime9" v-model="reportTime" v-bind:value ="reportTime" type="text" class="validate" disabled>
+                                            <label for="formTime9">报修时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input id="formRepReason9" v-model="repReason" v-bind:value ="repReason" type="text" class="validate">
+                                            <label for="formRepReason9">报修原因</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select v-model="repStatus" class="browser-default">
+                                                <option value=null>未处理</option>
+                                                <option value="success">已处理</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s9">
+                                            <input id="formRepFact9" v-model="repFact" v-bind:value ="repFact" type="text" class="validate">
+                                            <label for="formRepFact9">故障问题</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="chips chips-autocomplete">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <a href="#!" v-on:click="modalSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                            <a href="#!"  class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                    <div class="right">{{reportTime}}</div>
+                </div> 
+                </div>
+                 <!-- Dropdown Trigger -->
+                <a class='dropdown-button more-delete' href='#' data-activates= "dropdown9" style="max-height:30px"><i class="material-icons">more_vert</i></a>
+
+                <!-- Dropdown Structure -->
+                <ul id="dropdown9" v-on:click="deleteIt" class='dropdown-content'>
+                    <li><a href="#!">delete</a></li>
+
+                </ul>
+        
+            </section>
+            
+        </div>
+        <div class="col s12 m12 l4 offset-l1">
+            <section class="routine card small white">
+                <div class="card-image">
+                    <img src="images/Saving-Time.jpg">
+                    <span class="card-title">今日值班</span>
+                </div>
+                <div class="card-content">
+                    <p >周一：老大、老四</p>
+                </div>
+                <div class="card-action">
+                    <a href="#modalR">查看完整值班表</a>
+                    <div id="modalR" class="modal bottom-sheet">
+                        <div class="modal-content">
+                            <h4>值班表</h4>
+                            <ul class="collection">
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老大</span>
+                                    <p><br>周一、 周二值班</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老二</span>
+                                    <p><br>周三、 周四值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老三</span>
+                                    <p><br>周五、 周六值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老四</span>
+                                    <p><br>周日、  周一值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老五</span>
+                                    <p><br>周二、  周三值班</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </div>
+        <div class="col s12 m12 l4 offset-l1">
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>其他校区网管会电话</div>
+                    <div class="collapsible-body">
+                        <p>中心校区：(883) 62402</p>
+                        <p>洪家楼校区：(883) 76420</p>
+                        <p>趵突泉校区：(883) 82240</p>
+                        <p>千佛山校区：(883) 96361</p>
+                        <p>兴隆山校区：(825) 24560</p>
+                    </div>
+                </li>
+                <li>
+                <div class="collapsible-header"><i class="material-icons">place</i>各楼的网口接线情况</div>
+                <div class="collapsible-body">
+                    <p>1、2号学生宿舍楼每个房间<strong>2</strong>个信息接口，<strong>1</strong>个电话接口</p>
+                    <p>3号学生宿舍楼每个房间<strong>4</strong>个信息端口，其中<strong>2</strong>个端口开通网络</p>
+                    <p>4号学生宿舍楼每个房间<strong>6</strong>个信息端口，都开通网络</p>
+                    <p>5、6号学生宿舍楼每个房间<strong>4-6</strong>个信息点</p>
+                </div>
+                </li>
+                <li>
+                <div class="collapsible-header"><i class="material-icons">whatshot</i>守则</div>
+                <div class="collapsible-body">
+                    <p>
+                        值班的同学每天18:00前必须到达值班室(2号宿舍楼009房间)，将电话线接上，值班室不能空。
+                    </p>
+                    <p>
+                        在22:00之后方可离开值班室。
+                    </p>
+                </div>
+                </li>
+            </ul>
+        
+        </div>
+    </div>
+    
+    </main>
+    <script src="backstage.js"></script> 
+</body>
+</html>

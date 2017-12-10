@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>山东大学网管会软件园校区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<style>
+.side-nav .userView{
+    position: relative;
+    padding: 32px 32px 0;
+    margin-bottom:8px;
+}
+
+header, main, footer {
+      padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+      header, main, footer {
+        padding-left: 0;
+      }
+    }
+
+.repLists .card-content{
+    margin: 20px;
+}
+
+.card-p{
+    margin-top: 20px;
+}
+.card .card-image .card-title{
+    padding: 10px;
+}
+.more-delete{
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.moform{
+    margin-top: 40px;
+}
+.userView{
+    height:200px;
+}
+</style>
+<body class="grey lighten-3 ">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <header>
+        <!--<nav>
+            <div class="white nav-wrapper">
+                <a href="#" class="brand-logo"> Logo </a>
+                <ul id="nav-mobile" class="red lighten-2 right hide-on-med-and-down">
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </nav>-->
+    </header>
+
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+     <ul id="slide-out" class="side-nav fixed">
+      <li>
+          <div class="userView" >
+              <div class="background">
+                  <img src="images/qlsc.jpg" width="300" >
+              </div>
+              <!--<a href="#!user">
+                  <img class="circle" src="images/user.jpg">
+              </a>
+              <a href="#!name">
+                  <span class="white-text name">Jay chou</span>
+              </a>
+              <a href="#!email">
+                  <span class="white-text email">idontknow@abc.com</span>
+              </a>-->
+          </div>
+      </li>
+      <li><a href="backstage.html"class="waves-effect"><i class="material-icons">home</i>主页</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">人员管理</a></li>
+      <li><a href="#modalR"class="waves-effect"><i class="material-icons">date_range</i>查看值班表</a></li>
+      
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">网口维修</a></li>
+      <li><a class="waves-effect" href="#!"><i class="material-icons">inbox</i>报修表单</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">查询接口</a></li>
+      <li><a class="waves-effect" href="query.html"><i class="material-icons">face</i>自然语言查询</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">系统操作</a></li>
+      <li><a href="first.html" class="waves-effect"><i class="material-icons">power_settings_new</i>退出</a></li>
+    </ul>
+    <main>
+        <div id="modalR" class="modal bottom-sheet">
+                        <div class="modal-content">
+                            <h4>值班表</h4>
+                            <ul class="collection">
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老大</span>
+                                    <p><br>周一、 周二值班</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老二</span>
+                                    <p><br>周三、 周四值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老三</span>
+                                    <p><br>周五、 周六值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老四</span>
+                                    <p><br>周日、  周一值班 </p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="images/user.jpg" alt class="circle">
+                                    <span class="title">老五</span>
+                                    <p><br>周二、  周三值班</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+        <div class="container row">
+            <div class = "col s12 card white">
+                <table class="centered">
+                    <thead>
+                        <tr>
+                            <th>宿舍号</th>
+                            <th>联系方式</th>
+                            <th>报修原因</th>
+                            <th>报修时间</th>
+                            <th>处理状态</th>
+                            <th>实际原因</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbb" v-html="line">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <script src="maintaintable.js"></script> 
+</body>
+</html>
